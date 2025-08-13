@@ -22,7 +22,7 @@ const App = () => {
   });
 
   // Mock API functions (replace with your actual API calls)
- const API_BASE_URL = 'http://localhost:4000/api/round1';
+ const API_BASE_URL = 'https://leaderboard-project-rose.vercel.app/api/round1';
 
   const fetchTeams = async () => {
     setLoading(true);
