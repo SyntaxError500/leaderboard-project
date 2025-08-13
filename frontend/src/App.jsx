@@ -1,15 +1,21 @@
-
 import { useState, useEffect } from 'react';
 import { Trophy, Medal, Award, Users, Star, Plus, Edit2, Trash2, Save, X, Settings, AlertCircle, Moon, Sun, Zap, TrendingUp, Target, Crown } from 'lucide-react';
-import Footer from './components/Footer';
 import axios from 'axios';
+
+const Footer = () => (
+  <footer className="mt-16 py-8 text-center text-gray-500 text-sm">
+    <p>&copy; 2024 NSS Competition Leaderboard. All rights reserved.</p>
+  </footer>
+);
 
 const App = () => {
   const [activeRound, setActiveRound] = useState('round1');
   const [showAdmin, setShowAdmin] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingTeam, setEditingTeam] = useState(null);
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState([
+   
+  ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [darkMode, setDarkMode] = useState(true);
@@ -22,7 +28,7 @@ const App = () => {
   });
 
   // Mock API functions (replace with your actual API calls)
- const API_BASE_URL = 'http://localhost:4000/api/round1';
+ const API_BASE_URL = 'https://leaderboard-project-rose.vercel.app/api/round1';
 
   const fetchTeams = async () => {
     setLoading(true);
@@ -97,8 +103,6 @@ const App = () => {
     fetchTeams();
   };
 
-
-
   useEffect(() => { fetchTeams(); }, []);
 
   const getSortedTeams = () => [...teams].sort((a, b) => (b[activeRound] || 0) - (a[activeRound] || 0));
@@ -107,14 +111,14 @@ const App = () => {
     switch (rank) {
       case 1: return (
         <div className="relative">
-          <Trophy className="w-8 h-8 text-yellow-400 drop-shadow-lg" />
-          <Crown className="w-4 h-4 text-yellow-300 absolute -top-1 -right-1" />
+          <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-400 drop-shadow-lg" />
+          <Crown className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-300 absolute -top-1 -right-1" />
         </div>
       );
-      case 2: return <Medal className="w-8 h-8 text-gray-300 drop-shadow-lg" />;
-      case 3: return <Award className="w-8 h-8 text-amber-500 drop-shadow-lg" />;
+      case 2: return <Medal className="w-6 h-6 sm:w-8 sm:h-8 text-gray-300 drop-shadow-lg" />;
+      case 3: return <Award className="w-6 h-6 sm:w-8 sm:h-8 text-amber-500 drop-shadow-lg" />;
       default: return (
-        <div className={`w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm shadow-lg ${
+        <div className={`w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full font-bold text-xs sm:text-sm shadow-lg ${
           darkMode 
             ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white' 
             : 'bg-gradient-to-br from-blue-500 to-purple-500 text-white'
@@ -172,10 +176,10 @@ const App = () => {
     <div className={`min-h-screen transition-all duration-500 ${themeClasses}`}>
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-0 left-0 w-96 h-96 rounded-full opacity-20 blur-3xl ${
+        <div className={`absolute top-0 left-0 w-48 h-48 sm:w-96 sm:h-96 rounded-full opacity-20 blur-3xl ${
           darkMode ? 'bg-purple-500' : 'bg-blue-400'
         } animate-pulse`}></div>
-        <div className={`absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-20 blur-3xl ${
+        <div className={`absolute bottom-0 right-0 w-48 h-48 sm:w-96 sm:h-96 rounded-full opacity-20 blur-3xl ${
           darkMode ? 'bg-blue-500' : 'bg-purple-400'
         } animate-pulse`} style={{animationDelay: '2s'}}></div>
       </div>
@@ -186,60 +190,61 @@ const App = () => {
           ? 'bg-gradient-to-r from-gray-900 via-purple-900 to-blue-900' 
           : 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700'
       } text-white shadow-2xl`}>
-        <div className="max-w-6xl mx-auto px-4 py-8">
-          <div className="flex justify-between items-center">
+        <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
             <div className="space-y-2">
               <div className="flex items-center space-x-3">
-                <div className="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
-                  <Trophy className="w-8 h-8 text-yellow-400" />
+                <div className="p-2 sm:p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded"><img src="/nss.jpeg" alt=""  className='h-8 w-8'/></div>
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
+                  <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
                     NSS Competition Leaderboard
                   </h1>
-                  <p className="text-blue-200 text-lg">National Service Scheme - Not me but You</p>
+                  <p className="text-blue-200 text-sm sm:text-lg">National Service Scheme - Not me but You</p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto">
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="p-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300 backdrop-blur-sm"
+                className="p-2 sm:p-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300 backdrop-blur-sm"
               >
-                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                {darkMode ? <Sun className="w-4 h-4 sm:w-5 sm:h-5" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
               </button>
               <button 
                 onClick={fetchTeams} 
                 disabled={loading} 
-                className="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl font-medium transition-all duration-300 backdrop-blur-sm border border-white/20"
+                className="px-3 py-2 sm:px-6 sm:py-3 bg-white/10 hover:bg-white/20 rounded-xl font-medium transition-all duration-300 backdrop-blur-sm border border-white/20 text-sm sm:text-base"
               >
                 {loading ? 'Loading...' : 'Refresh'}
               </button>
               <button
                 onClick={() => setShowAdmin(!showAdmin)}
-                className={`px-6 py-3 rounded-xl flex items-center space-x-2 font-medium transition-all duration-300 ${
+                className={`px-3 py-2 sm:px-6 sm:py-3 rounded-xl flex items-center space-x-2 font-medium transition-all duration-300 text-sm sm:text-base ${
                   showAdmin 
                     ? 'bg-white text-purple-600 hover:bg-gray-100 shadow-lg' 
                     : 'bg-purple-600/80 hover:bg-purple-700 text-white border border-purple-500/50 backdrop-blur-sm'
                 }`}
               >
-                <Settings className="w-4 h-4" />
-                <span>{showAdmin ? 'Exit Admin' : 'Admin Mode'}</span>
+                <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">{showAdmin ? 'Exit Admin' : 'Admin Mode'}</span>
+                <span className="sm:hidden">{showAdmin ? 'Exit' : 'Admin'}</span>
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 py-8">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 py-6 sm:py-8">
         {error && (
           <div className={`p-4 rounded-xl flex items-center space-x-3 mb-6 border shadow-lg ${
             darkMode 
               ? 'bg-red-900/20 border-red-500/30 text-red-300' 
               : 'bg-red-50 border-red-200 text-red-800'
           }`}>
-            <AlertCircle className="w-5 h-5 text-red-500" />
-            <span className="flex-1">{error}</span>
+            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+            <span className="flex-1 text-sm sm:text-base">{error}</span>
             <button 
               onClick={() => setError('')} 
               className={`hover:bg-red-500/20 rounded-lg p-1 transition-colors ${
@@ -252,54 +257,54 @@ const App = () => {
         )}
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className={`p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+          <div className={`p-4 sm:p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className={`text-sm font-medium ${textSecondary}`}>Total Teams</p>
-                <p className={`text-3xl font-bold ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>{totalTeams}</p>
+                <p className={`text-xs sm:text-sm font-medium ${textSecondary}`}>Total Teams</p>
+                <p className={`text-xl sm:text-3xl font-bold ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>{totalTeams}</p>
               </div>
-              <Users className={`w-8 h-8 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+              <Users className={`w-6 h-6 sm:w-8 sm:h-8 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
             </div>
           </div>
-          <div className={`p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
+          <div className={`p-4 sm:p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className={`text-sm font-medium ${textSecondary}`}>Top Score</p>
-                <p className={`text-3xl font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>{topScore}</p>
+                <p className={`text-xs sm:text-sm font-medium ${textSecondary}`}>Top Score</p>
+                <p className={`text-xl sm:text-3xl font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>{topScore}</p>
               </div>
-              <Target className={`w-8 h-8 ${darkMode ? 'text-green-400' : 'text-green-600'}`} />
+              <Target className={`w-6 h-6 sm:w-8 sm:h-8 ${darkMode ? 'text-green-400' : 'text-green-600'}`} />
             </div>
           </div>
-          <div className={`p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
+          <div className={`p-4 sm:p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className={`text-sm font-medium ${textSecondary}`}>Average Score</p>
-                <p className={`text-3xl font-bold ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}>{averageScore}</p>
+                <p className={`text-xs sm:text-sm font-medium ${textSecondary}`}>Average Score</p>
+                <p className={`text-xl sm:text-3xl font-bold ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}>{averageScore}</p>
               </div>
-              <TrendingUp className={`w-8 h-8 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`} />
+              <TrendingUp className={`w-6 h-6 sm:w-8 sm:h-8 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`} />
             </div>
           </div>
-          <div className={`p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
+          <div className={`p-4 sm:p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className={`text-sm font-medium ${textSecondary}`}>Current Round</p>
-                <p className={`text-2xl font-bold ${darkMode ? 'text-yellow-400' : 'text-yellow-600'}`}>{roundTitles[activeRound]}</p>
+                <p className={`text-xs sm:text-sm font-medium ${textSecondary}`}>Current Round</p>
+                <p className={`text-lg sm:text-2xl font-bold ${darkMode ? 'text-yellow-400' : 'text-yellow-600'}`}>{roundTitles[activeRound]}</p>
               </div>
-              <Zap className={`w-8 h-8 ${darkMode ? 'text-yellow-400' : 'text-yellow-600'}`} />
+              <Zap className={`w-6 h-6 sm:w-8 sm:h-8 ${darkMode ? 'text-yellow-400' : 'text-yellow-600'}`} />
             </div>
           </div>
         </div>
 
         {/* Round Selection */}
-        <div className={`p-6 rounded-xl shadow-xl border mb-8 ${cardBg}`}>
-          <h2 className={`text-2xl font-bold mb-6 ${textPrimary}`}>Competition Rounds</h2>
-          <div className="flex gap-4">
+        <div className={`p-4 sm:p-6 rounded-xl shadow-xl border mb-6 sm:mb-8 ${cardBg}`}>
+          <h2 className={`text-xl sm:text-2xl font-bold mb-4 sm:mb-6 ${textPrimary}`}>Competition Rounds</h2>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
             {Object.entries(roundTitles).map(([key, title]) => (
               <button
                 key={key}
                 onClick={() => setActiveRound(key)}
-                className={`px-8 py-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
+                className={`px-4 py-3 sm:px-8 sm:py-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
                   activeRound === key 
                     ? darkMode
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25'
@@ -317,13 +322,13 @@ const App = () => {
 
         {/* Admin Controls */}
         {showAdmin && (
-          <div className={`p-6 rounded-xl shadow-xl border mb-8 ${cardBg}`}>
-            <div className="flex justify-between items-center mb-6">
-              <h3 className={`text-xl font-bold ${textPrimary}`}>Admin Controls</h3>
+          <div className={`p-4 sm:p-6 rounded-xl shadow-xl border mb-6 sm:mb-8 ${cardBg}`}>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+              <h3 className={`text-lg sm:text-xl font-bold ${textPrimary}`}>Admin Controls</h3>
               <button
                 onClick={() => setShowAddForm(!showAddForm)}
                 disabled={loading}
-                className={`px-6 py-3 rounded-xl flex items-center space-x-2 font-medium transition-all duration-300 transform hover:scale-105 ${
+                className={`w-full sm:w-auto px-4 py-3 sm:px-6 rounded-xl flex items-center justify-center space-x-2 font-medium transition-all duration-300 transform hover:scale-105 ${
                   darkMode
                     ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25'
                     : 'bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25'
@@ -336,8 +341,8 @@ const App = () => {
 
             {showAddForm && (
               <div className="border-t border-gray-600/20 pt-6 space-y-6">
-                <h4 className={`text-lg font-semibold ${textPrimary}`}>Add New Team</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <h4 className={`text-base sm:text-lg font-semibold ${textPrimary}`}>Add New Team</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                   {[
                     { key: 'name', placeholder: 'Team Name', type: 'text' },
                     { key: 'college', placeholder: 'College', type: 'text' },
@@ -354,7 +359,7 @@ const App = () => {
                         ...newTeam, 
                         [field.key]: field.type === 'number' ? +e.target.value || 0 : e.target.value
                       })}
-                      className={`px-4 py-3 rounded-xl border transition-all duration-300 focus:ring-2 focus:ring-purple-500 ${
+                      className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl border transition-all duration-300 focus:ring-2 focus:ring-purple-500 text-sm sm:text-base ${
                         darkMode
                           ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                           : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
@@ -362,11 +367,11 @@ const App = () => {
                     />
                   ))}
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                   <button 
                     onClick={addTeam} 
                     disabled={loading}
-                    className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
+                    className={`px-4 py-3 sm:px-6 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
                       darkMode
                         ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25'
                         : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25'
@@ -379,7 +384,7 @@ const App = () => {
                       setShowAddForm(false); 
                       setNewTeam({ name: '', college: '', round1: 0, round2: 0, round3: 0 }); 
                     }}
-                    className={`px-6 py-3 rounded-xl border font-medium transition-all duration-300 ${
+                    className={`px-4 py-3 sm:px-6 rounded-xl border font-medium transition-all duration-300 ${
                       darkMode
                         ? 'border-gray-600 text-gray-300 hover:bg-gray-700'
                         : 'border-gray-300 text-gray-700 hover:bg-gray-100'
@@ -395,28 +400,28 @@ const App = () => {
 
         {/* Leaderboard */}
         <div className={`rounded-xl shadow-2xl border overflow-hidden ${cardBg}`}>
-          <div className={`px-6 py-6 border-b ${
+          <div className={`px-4 py-4 sm:px-6 sm:py-6 border-b ${
             darkMode 
               ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' 
               : 'bg-gradient-to-r from-gray-50 to-gray-100 border-gray-200'
           }`}>
-            <h2 className={`text-3xl font-bold ${textPrimary}`}>{roundTitles[activeRound]} Leaderboard</h2>
-            <p className={`${textSecondary} mt-1`}>Current standings and team performance</p>
+            <h2 className={`text-2xl sm:text-3xl font-bold ${textPrimary}`}>{roundTitles[activeRound]} Leaderboard</h2>
+            <p className={`${textSecondary} mt-1 text-sm sm:text-base`}>Current standings and team performance</p>
           </div>
 
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {loading && teams.length === 0 ? (
               <div className="flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-purple-600"></div>
               </div>
             ) : sortedTeams.length === 0 ? (
               <div className={`text-center py-12 ${textSecondary}`}>
-                <Users className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p className="text-xl">No teams found</p>
-                {showAdmin && <p>Add some teams to get started!</p>}
+                <Users className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-50" />
+                <p className="text-lg sm:text-xl">No teams found</p>
+                {showAdmin && <p className="text-sm sm:text-base">Add some teams to get started!</p>}
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {sortedTeams.map((team, index) => {
                   const rank = index + 1;
                   const isEditing = editingTeam === team.id;
@@ -424,18 +429,19 @@ const App = () => {
                   return (
                     <div 
                       key={team.id} 
-                      className={`p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 ${getRankBgColor(rank)}`}
+                      className={`p-4 sm:p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 ${getRankBgColor(rank)}`}
                     >
                       {isEditing ? (
                         <form onSubmit={(e) => handleEditSubmit(e, team._id)} className="space-y-4">
-                          <div className="flex items-center space-x-4 mb-4">
-                            <div className="flex-shrink-0">{getRankIcon(rank)}</div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
+                          <div className="flex items-start space-x-4 mb-4">
+                            <div className="flex-shrink-0 mt-2">{getRankIcon(rank)}</div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-grow">
                               <input 
                                 name="name" 
                                 defaultValue={team.name} 
                                 required 
-                                className={`px-4 py-3 rounded-xl border ${
+                                placeholder="Team Name"
+                                className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl border text-sm sm:text-base ${
                                   darkMode 
                                     ? 'bg-gray-700 border-gray-600 text-white' 
                                     : 'bg-white border-gray-300 text-gray-900'
@@ -445,7 +451,8 @@ const App = () => {
                                 name="college" 
                                 defaultValue={team.college} 
                                 required 
-                                className={`px-4 py-3 rounded-xl border ${
+                                placeholder="College"
+                                className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl border text-sm sm:text-base ${
                                   darkMode 
                                     ? 'bg-gray-700 border-gray-600 text-white' 
                                     : 'bg-white border-gray-300 text-gray-900'
@@ -453,14 +460,15 @@ const App = () => {
                               />
                             </div>
                           </div>
-                          <div className="grid grid-cols-3 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             {['round1', 'round2', 'round3'].map(round => (
                               <input 
                                 key={round}
                                 name={round} 
                                 type="number" 
                                 defaultValue={team[round] || 0} 
-                                className={`px-4 py-3 rounded-xl border ${
+                                placeholder={`${round.replace('round', 'Round ')} Points`}
+                                className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl border text-sm sm:text-base ${
                                   darkMode 
                                     ? 'bg-gray-700 border-gray-600 text-white' 
                                     : 'bg-white border-gray-300 text-gray-900'
@@ -468,11 +476,11 @@ const App = () => {
                               />
                             ))}
                           </div>
-                          <div className="flex justify-end space-x-3">
+                          <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3">
                             <button 
                               type="submit" 
                               disabled={loading}
-                              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl flex items-center space-x-2 transition-all duration-300"
+                              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl flex items-center justify-center space-x-2 transition-all duration-300"
                             >
                               <Save className="w-4 h-4" />
                               <span>{loading ? 'Saving...' : 'Save'}</span>
@@ -480,7 +488,7 @@ const App = () => {
                             <button 
                               type="button" 
                               onClick={() => setEditingTeam(null)}
-                              className={`px-4 py-2 rounded-xl border flex items-center space-x-2 transition-all duration-300 ${
+                              className={`px-4 py-2 rounded-xl border flex items-center justify-center space-x-2 transition-all duration-300 ${
                                 darkMode 
                                   ? 'border-gray-600 text-gray-300 hover:bg-gray-700' 
                                   : 'border-gray-300 text-gray-700 hover:bg-gray-100'
@@ -492,17 +500,17 @@ const App = () => {
                           </div>
                         </form>
                       ) : (
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center space-x-6">
-                            <div className="flex-shrink-0">{getRankIcon(rank)}</div>
-                            <div className="space-y-2">
-                              <h3 className={`text-xl font-bold ${textPrimary}`}>{team.name}</h3>
-                              <p className={`${textSecondary} font-medium`}>{team.college}</p>
-                              <div className="flex space-x-6 text-sm">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+                          <div className="flex items-start space-x-3 sm:space-x-6 flex-grow">
+                            <div className="flex-shrink-0 mt-1">{getRankIcon(rank)}</div>
+                            <div className="space-y-2 min-w-0 flex-grow">
+                              <h3 className={`text-lg sm:text-xl font-bold ${textPrimary} truncate`}>{team.name}</h3>
+                              <p className={`${textSecondary} font-medium text-sm sm:text-base truncate`}>{team.college}</p>
+                              <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
                                 {['round1', 'round2', 'round3'].map(round => (
                                   <span 
                                     key={round}
-                                    className={`px-3 py-1 rounded-lg ${
+                                    className={`px-2 py-1 sm:px-3 rounded-lg whitespace-nowrap ${
                                       round === activeRound 
                                         ? darkMode 
                                           ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30' 
@@ -518,38 +526,38 @@ const App = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center space-x-6">
-                            <div className="text-right">
-                              <div className={`text-4xl font-bold ${
+                          <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 sm:space-x-6">
+                            <div className="text-center sm:text-right">
+                              <div className={`text-2xl sm:text-4xl font-bold ${
                                 darkMode ? 'text-blue-400' : 'text-blue-600'
                               }`}>
                                 {team[activeRound] || 0}
                               </div>
-                              <div className={`text-sm ${textSecondary}`}>points</div>
+                              <div className={`text-xs sm:text-sm ${textSecondary}`}>points</div>
                             </div>
                             {showAdmin && (
-                              <div className="flex flex-col space-y-2">
+                              <div className="flex sm:flex-col space-x-2 sm:space-x-0 sm:space-y-2">
                                 <button 
                                   onClick={() => setEditingTeam(team.id)} 
                                   disabled={loading}
-                                  className={`p-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                                  className={`p-2 sm:p-3 rounded-xl transition-all duration-300 hover:scale-105 ${
                                     darkMode 
                                       ? 'text-blue-400 hover:bg-blue-600/20 border border-blue-500/30' 
                                       : 'text-blue-600 hover:bg-blue-100 border border-blue-200'
                                   }`}
                                 >
-                                  <Edit2 className="w-4 h-4" />
+                                  <Edit2 className="w-3 h-3 sm:w-4 sm:h-4" />
                                 </button>
                                 <button 
                                   onClick={() => removeTeam(team._id)} 
                                   disabled={loading}
-                                  className={`p-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                                  className={`p-2 sm:p-3 rounded-xl transition-all duration-300 hover:scale-105 ${
                                     darkMode 
                                       ? 'text-red-400 hover:bg-red-600/20 border border-red-500/30' 
                                       : 'text-red-600 hover:bg-red-100 border border-red-200'
                                   }`}
                                 >
-                                  <Trash2 className="w-4 h-4" />
+                                  <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                                 </button>
                               </div>
                             )}
