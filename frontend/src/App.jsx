@@ -285,7 +285,7 @@ const App = () => {
               <TrendingUp className={`w-6 h-6 sm:w-8 sm:h-8 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`} />
             </div>
           </div>
-          <div className={`p-4 sm:p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
+          {/* <div className={`p-4 sm:p-6 rounded-xl shadow-xl border transition-all duration-300 hover:scale-105 ${cardBg}`}>
             <div className="flex items-center justify-between">
               <div>
                 <p className={`text-xs sm:text-sm font-medium ${textSecondary}`}>Current Round</p>
@@ -293,32 +293,9 @@ const App = () => {
               </div>
               <Zap className={`w-6 h-6 sm:w-8 sm:h-8 ${darkMode ? 'text-yellow-400' : 'text-yellow-600'}`} />
             </div>
-          </div>
+          </div> */}
         </div>
 
-        {/* Round Selection */}
-        <div className={`p-4 sm:p-6 rounded-xl shadow-xl border mb-6 sm:mb-8 ${cardBg}`}>
-          <h2 className={`text-xl sm:text-2xl font-bold mb-4 sm:mb-6 ${textPrimary}`}>Competition Rounds</h2>
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-            {Object.entries(roundTitles).map(([key, title]) => (
-              <button
-                key={key}
-                onClick={() => setActiveRound(key)}
-                className={`px-4 py-3 sm:px-8 sm:py-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
-                  activeRound === key 
-                    ? darkMode
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25'
-                      : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25'
-                    : darkMode
-                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
-                }`}
-              >
-                {title}
-              </button>
-            ))}
-          </div>
-        </div>
 
         {/* Admin Controls */}
         {showAdmin && (
@@ -399,178 +376,161 @@ const App = () => {
         )}
 
         {/* Leaderboard */}
-        <div className={`rounded-xl shadow-2xl border overflow-hidden ${cardBg}`}>
-          <div className={`px-4 py-4 sm:px-6 sm:py-6 border-b ${
-            darkMode 
-              ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' 
-              : 'bg-gradient-to-r from-gray-50 to-gray-100 border-gray-200'
-          }`}>
-            <h2 className={`text-2xl sm:text-3xl font-bold ${textPrimary}`}>{roundTitles[activeRound]} Leaderboard</h2>
-            <p className={`${textSecondary} mt-1 text-sm sm:text-base`}>Current standings and team performance</p>
-          </div>
+       {/* Leaderboard */}
+<div className={`rounded-xl shadow-2xl border overflow-hidden ${cardBg}`}>
+  <div className={`px-4 py-4 sm:px-6 sm:py-6 border-b ${
+    darkMode 
+      ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' 
+      : 'bg-gradient-to-r from-gray-50 to-gray-100 border-gray-200'
+  }`}>
+    <h2 className={`text-2xl sm:text-3xl font-bold ${textPrimary}`}>{roundTitles[activeRound]} Leaderboard</h2>
+    <p className={`${textSecondary} mt-1 text-sm sm:text-base`}>Current standings and team performance</p>
+  </div>
 
-          <div className="p-4 sm:p-6">
-            {loading && teams.length === 0 ? (
-              <div className="flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-purple-600"></div>
-              </div>
-            ) : sortedTeams.length === 0 ? (
-              <div className={`text-center py-12 ${textSecondary}`}>
-                <Users className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-50" />
-                <p className="text-lg sm:text-xl">No teams found</p>
-                {showAdmin && <p className="text-sm sm:text-base">Add some teams to get started!</p>}
-              </div>
-            ) : (
-              <div className="space-y-3 sm:space-y-4">
-                {sortedTeams.map((team, index) => {
-                  const rank = index + 1;
-                  const isEditing = editingTeam === team.id;
+  <div className="p-4 sm:p-6">
+    {loading && teams.length === 0 ? (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-purple-600"></div>
+      </div>
+    ) : sortedTeams.length === 0 ? (
+      <div className={`text-center py-12 ${textSecondary}`}>
+        <Users className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-50" />
+        <p className="text-lg sm:text-xl">No teams found</p>
+        {showAdmin && <p className="text-sm sm:text-base">Add some teams to get started!</p>}
+      </div>
+    ) : (
+      <div className="space-y-2 sm:space-y-3">
+        {sortedTeams.map((team, index) => {
+          const rank = index + 1;
+          const isEditing = editingTeam === team.id;
 
-                  return (
-                    <div 
-                      key={team.id} 
-                      className={`p-4 sm:p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 ${getRankBgColor(rank)}`}
-                    >
-                      {isEditing ? (
-                        <form onSubmit={(e) => handleEditSubmit(e, team._id)} className="space-y-4">
-                          <div className="flex items-start space-x-4 mb-4">
-                            <div className="flex-shrink-0 mt-2">{getRankIcon(rank)}</div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-grow">
-                              <input 
-                                name="name" 
-                                defaultValue={team.name} 
-                                required 
-                                placeholder="Team Name"
-                                className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl border text-sm sm:text-base ${
-                                  darkMode 
-                                    ? 'bg-gray-700 border-gray-600 text-white' 
-                                    : 'bg-white border-gray-300 text-gray-900'
-                                }`} 
-                              />
-                              <input 
-                                name="college" 
-                                defaultValue={team.college} 
-                                required 
-                                placeholder="College"
-                                className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl border text-sm sm:text-base ${
-                                  darkMode 
-                                    ? 'bg-gray-700 border-gray-600 text-white' 
-                                    : 'bg-white border-gray-300 text-gray-900'
-                                }`} 
-                              />
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            {['round1', 'round2', 'round3'].map(round => (
-                              <input 
-                                key={round}
-                                name={round} 
-                                type="number" 
-                                defaultValue={team[round] || 0} 
-                                placeholder={`${round.replace('round', 'Round ')} Points`}
-                                className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl border text-sm sm:text-base ${
-                                  darkMode 
-                                    ? 'bg-gray-700 border-gray-600 text-white' 
-                                    : 'bg-white border-gray-300 text-gray-900'
-                                }`} 
-                              />
-                            ))}
-                          </div>
-                          <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3">
-                            <button 
-                              type="submit" 
-                              disabled={loading}
-                              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl flex items-center justify-center space-x-2 transition-all duration-300"
-                            >
-                              <Save className="w-4 h-4" />
-                              <span>{loading ? 'Saving...' : 'Save'}</span>
-                            </button>
-                            <button 
-                              type="button" 
-                              onClick={() => setEditingTeam(null)}
-                              className={`px-4 py-2 rounded-xl border flex items-center justify-center space-x-2 transition-all duration-300 ${
-                                darkMode 
-                                  ? 'border-gray-600 text-gray-300 hover:bg-gray-700' 
-                                  : 'border-gray-300 text-gray-700 hover:bg-gray-100'
-                              }`}
-                            >
-                              <X className="w-4 h-4" />
-                              <span>Cancel</span>
-                            </button>
-                          </div>
-                        </form>
-                      ) : (
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-                          <div className="flex items-start space-x-3 sm:space-x-6 flex-grow">
-                            <div className="flex-shrink-0 mt-1">{getRankIcon(rank)}</div>
-                            <div className="space-y-2 min-w-0 flex-grow">
-                              <h3 className={`text-lg sm:text-xl font-bold ${textPrimary} truncate`}>{team.name}</h3>
-                              <p className={`${textSecondary} font-medium text-sm sm:text-base truncate`}>{team.college}</p>
-                              <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
-                                {['round1', 'round2', 'round3'].map(round => (
-                                  <span 
-                                    key={round}
-                                    className={`px-2 py-1 sm:px-3 rounded-lg whitespace-nowrap ${
-                                      round === activeRound 
-                                        ? darkMode 
-                                          ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30' 
-                                          : 'bg-purple-100 text-purple-700 border border-purple-200'
-                                        : darkMode 
-                                          ? 'bg-gray-700/50 text-gray-400' 
-                                          : 'bg-gray-100 text-gray-600'
-                                    }`}
-                                  >
-                                    {round.replace('round', 'R')}: {team[round] || 0}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 sm:space-x-6">
-                            <div className="text-center sm:text-right">
-                              <div className={`text-2xl sm:text-4xl font-bold ${
-                                darkMode ? 'text-blue-400' : 'text-blue-600'
-                              }`}>
-                                {team[activeRound] || 0}
-                              </div>
-                              <div className={`text-xs sm:text-sm ${textSecondary}`}>points</div>
-                            </div>
-                            {showAdmin && (
-                              <div className="flex sm:flex-col space-x-2 sm:space-x-0 sm:space-y-2">
-                                <button 
-                                  onClick={() => setEditingTeam(team.id)} 
-                                  disabled={loading}
-                                  className={`p-2 sm:p-3 rounded-xl transition-all duration-300 hover:scale-105 ${
-                                    darkMode 
-                                      ? 'text-blue-400 hover:bg-blue-600/20 border border-blue-500/30' 
-                                      : 'text-blue-600 hover:bg-blue-100 border border-blue-200'
-                                  }`}
-                                >
-                                  <Edit2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                                </button>
-                                <button 
-                                  onClick={() => removeTeam(team._id)} 
-                                  disabled={loading}
-                                  className={`p-2 sm:p-3 rounded-xl transition-all duration-300 hover:scale-105 ${
-                                    darkMode 
-                                      ? 'text-red-400 hover:bg-red-600/20 border border-red-500/30' 
-                                      : 'text-red-600 hover:bg-red-100 border border-red-200'
-                                  }`}
-                                >
-                                  <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
+          return (
+            <div 
+              key={team.id} 
+              className={`p-3 sm:p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 ${getRankBgColor(rank)}`}
+            >
+              {isEditing ? (
+                <form onSubmit={(e) => handleEditSubmit(e, team._id)} className="space-y-3">
+                  <div className="flex items-start space-x-3 mb-3">
+                    <div className="flex-shrink-0 mt-1">{getRankIcon(rank)}</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-grow">
+                      <input 
+                        name="name" 
+                        defaultValue={team.name} 
+                        required 
+                        placeholder="Team Name"
+                        className={`px-3 py-2 rounded-xl border text-sm ${
+                          darkMode 
+                            ? 'bg-gray-700 border-gray-600 text-white' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`} 
+                      />
+                      <input 
+                        name="college" 
+                        defaultValue={team.college} 
+                        required 
+                        placeholder="College"
+                        className={`px-3 py-2 rounded-xl border text-sm ${
+                          darkMode 
+                            ? 'bg-gray-700 border-gray-600 text-white' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`} 
+                      />
                     </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {['round1', 'round2', 'round3'].map(round => (
+                      <input 
+                        key={round}
+                        name={round} 
+                        type="number" 
+                        defaultValue={team[round] || 0} 
+                        placeholder={`${round.replace('round', 'Round ')} Points`}
+                        className={`px-3 py-2 rounded-xl border text-sm ${
+                          darkMode 
+                            ? 'bg-gray-700 border-gray-600 text-white' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`} 
+                      />
+                    ))}
+                  </div>
+                  <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3">
+                    <button 
+                      type="submit" 
+                      disabled={loading}
+                      className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl flex items-center justify-center space-x-2 transition-all duration-300 text-sm"
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>{loading ? 'Saving...' : 'Save'}</span>
+                    </button>
+                    <button 
+                      type="button" 
+                      onClick={() => setEditingTeam(null)}
+                      className={`px-3 py-2 rounded-xl border flex items-center justify-center space-x-2 transition-all duration-300 text-sm ${
+                        darkMode 
+                          ? 'border-gray-600 text-gray-300 hover:bg-gray-700' 
+                          : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      <X className="w-4 h-4" />
+                      <span>Cancel</span>
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
+                  <div className="flex items-center space-x-3 sm:space-x-4 flex-grow">
+                    <div className="flex-shrink-0">{getRankIcon(rank)}</div>
+                    <div className="min-w-0 flex-grow">
+                      <h3 className={`text-base sm:text-lg font-bold ${textPrimary} truncate`}>{team.name}</h3>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-3 sm:space-x-4">
+                    <div className="text-center sm:text-right">
+                      <div className={`text-xl sm:text-2xl font-bold ${
+                        darkMode ? 'text-blue-400' : 'text-blue-600'
+                      }`}>
+                        {team[activeRound] || 0}
+                      </div>
+                      <div className={`text-xs ${textSecondary}`}>points</div>
+                    </div>
+                    {showAdmin && (
+                      <div className="flex sm:flex-col space-x-2 sm:space-x-0 sm:space-y-1">
+                        <button 
+                          onClick={() => setEditingTeam(team.id)} 
+                          disabled={loading}
+                          className={`p-2 rounded-xl transition-all duration-300 hover:scale-105 ${
+                            darkMode 
+                              ? 'text-blue-400 hover:bg-blue-600/20 border border-blue-500/30' 
+                              : 'text-blue-600 hover:bg-blue-100 border border-blue-200'
+                          }`}
+                        >
+                          <Edit2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                        </button>
+                        <button 
+                          onClick={() => removeTeam(team._id)} 
+                          disabled={loading}
+                          className={`p-2 rounded-xl transition-all duration-300 hover:scale-105 ${
+                            darkMode 
+                              ? 'text-red-400 hover:bg-red-600/20 border border-red-500/30' 
+                              : 'text-red-600 hover:bg-red-100 border border-red-200'
+                          }`}
+                        >
+                          <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</div>
+
       </div>
 
       {/* Footer */}
